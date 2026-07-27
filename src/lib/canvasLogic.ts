@@ -1,15 +1,25 @@
 
 const fps = 30;
 
-let x = 0;
-let y = 0;
-let vx = 1.2;
-let vy = 1.2;
-
-const sideLength = 30;
+const sideLength = 100;
 
 const startAnimation = (canvas: HTMLCanvasElement) => {
   const ctx = canvas.getContext('2d')!;
+
+  let x = 0;
+  let y = 0;
+  let vx = 5;
+  let vy = 5;
+
+  function resize() {
+    canvas.width = canvas.clientWidth;
+    canvas.height = canvas.clientHeight;
+  }
+
+  const observer = new ResizeObserver(resize);
+  observer.observe(canvas);
+
+  resize();
   
   const interval = setInterval(() => {
     ctx.fillStyle = 'black';
@@ -30,6 +40,7 @@ const startAnimation = (canvas: HTMLCanvasElement) => {
 
   return {
     destroy() {
+      observer.disconnect();
       clearInterval(interval);
     }
   };
